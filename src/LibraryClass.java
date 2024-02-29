@@ -1,5 +1,5 @@
 /*
-Mikael Moronta CEN 3024C 1/28/24
+Mikael Moronta CEN 3024C 02/29/24
 LibraryClass
 The Library class is a very fundamental class that will handle most of the
 features needed in order to have a functional library management system.
@@ -87,8 +87,47 @@ public class LibraryClass {
     anything. It then matches that inputted id to one on the internal
     Book list and deletes the book if it does.
      */
-    public void removeBook (int id){
+    public void removeBookByID (int id){
         bookList.removeIf(book -> book.getId() == id);
+    }
+
+    /*
+    removeBookByTitle only takes the title as an input and doesn't return
+    anything. It then matches that inputted title to one on the internal
+    Book list and deletes the book if it does.
+     */
+    public void removeBookByTitle(String title) {
+        bookList.removeIf(book -> book.getTitle().equalsIgnoreCase(title));
+    }
+
+    /*
+    checkOutBook only takes the title as an input and doesn't return
+    anything. It then matches the inputted title to one on the internal
+    Book list and checks out the book if it does.
+    */
+    public void checkOutBook(String title) {
+        for (BookClass book : bookList) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                book.checkOut();
+                return;
+            }
+        }
+        System.out.println("Error: Book \"" + title + "\" not found in the library.");
+    }
+
+    /*
+    checkInBook only takes the title as an input and doesn't return
+    anything. It then matches the inputted title to one on the internal
+    Book list and checks in the book if it does.
+    */
+    public void checkInBook(String title) {
+        for (BookClass book : bookList) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                book.checkIn();
+                return;
+            }
+        }
+        System.out.println("Error: Book \"" + title + "\" not found in the library.");
     }
 
     /*
