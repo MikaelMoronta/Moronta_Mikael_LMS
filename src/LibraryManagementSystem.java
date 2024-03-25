@@ -1,92 +1,55 @@
 /*
-Mikael Moronta CEN 3024C 02/29/24
+Mikael Moronta CEN 3024C 03/24/24
 LibraryManagementSystem class
-The LibraryManagementSystem class which contains the main method
-provides a simple console menu that the user can interact with.
-The main method interacts with other methods of other classes by creating objects
-for the purpose of completing the specific task that the user inputs.
-Thanks to this the user will be able to interact with the library management
-system, which will let him add, remove by barcode, remove by title, check in, check out, and list all books in the collection.
- */
+The LibraryManagementSystem class which contains the initial GUI window for the LMS program. It allows users to input a
+file name, load a database of books from a text file, and proceed to the main panel of the application.
 
-import java.util.Scanner;
+This program aims to provide a digital solution for managing a library's book collection.
+Users can load book data from a text file, remove existing ones by ID or title,
+check out and check in books. The program offers a user-friendly graphical interface where users can perform
+these operations efficiently. It enhances library management by automating tasks and ensuring accurate record-keeping.
+*/
 
-public class LibraryManagementSystem {
-    public static void main(String[] args) {
-        int menuChoice, bookID;
-        String title, author;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-        LibraryClass bookLibrary = new LibraryClass();
-        Scanner scan = new Scanner(System.in);
+public class LibraryManagementSystem extends JFrame {
+    private JLabel Title;
+    private JTextField tfFileName;
+    private JButton btnSubmit;
+    private JPanel FileNamePanel;
+    public static LibraryClass bookLibrary = new LibraryClass();
+    public LibraryManagementSystem() {
 
-        System.out.print("Please input file name to load database: ");
-        String filename = scan.nextLine();
-        bookLibrary.loadBooksFromTextFile(filename);
+        setContentPane(FileNamePanel);
+        setTitle("Database Input");
+        setSize(450, 300);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
 
+        btnSubmit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
 
-        do {
-            System.out.println("\nWelcome to the Library Management System");
-            System.out.println("Please choose from the following options:");
-            System.out.println("1. Add new book");
-            System.out.println("2. Remove book by barcode number");
-            System.out.println("3. Remove book by title");
-            System.out.println("4. Check out book");
-            System.out.println("5. Check in book");
-            System.out.println("6. List all books");
-            System.out.println("7. Save and exit");
-            System.out.print("Enter your choice: ");
+                String filename = tfFileName.getText();
+                boolean fileNotFound = bookLibrary.loadBooksFromTextFile(filename);
 
-            menuChoice = scan.nextInt();
-            scan.nextLine();
+                if (fileNotFound){
+                    JOptionPane.showMessageDialog(LibraryManagementSystem.this, "File is not found, please try again");
+                } else{
+                    dispose();
 
-            switch (menuChoice){
-                case 1:
-                    System.out.print("Enter unique book ID: ");
-                    bookID = scan.nextInt();
-                    scan.nextLine();
-                    System.out.print("Enter book title: ");
-                    title = scan.nextLine();
-                    System.out.print("Enter book author: ");
-                    author = scan.nextLine();
-                    bookLibrary.addBook(bookID, title, author);
-                    break;
-                case 2:
-                    System.out.print("Enter book ID to remove: ");
-                    int idToRemove = scan.nextInt();
-                    bookLibrary.removeBookByID(idToRemove);
-                    System.out.println("Book deleted.");
-                    System.out.println("List of all books:");
-                    bookLibrary.outputAllBooks();
-                    break;
-                case 3:
-                    System.out.print("Enter book title to remove: ");
-                    String titleToRemove = scan.nextLine();
-                    bookLibrary.removeBookByTitle(titleToRemove);
-                    System.out.println("Book deleted.");
-                    System.out.println("List of all books:");
-                    bookLibrary.outputAllBooks();
-                    break;
-                case 4:
-                    System.out.print("Enter book title to check out: ");
-                    String titleToCheckOut = scan.nextLine();
-                    bookLibrary.checkOutBook(titleToCheckOut);
-                    break;
-                case 5:
-                    System.out.print("Enter book title to check in: ");
-                    String titleToCheckIn = scan.nextLine();
-                    bookLibrary.checkInBook(titleToCheckIn);
-                    break;
-                case 6:
-                    System.out.println("List of all books:");
-                    bookLibrary.outputAllBooks();
-                    break;
-                case 7:
-                    bookLibrary.saveBooksToTextFile(filename);
-                    System.out.println("Library data saved. See you soon!");
-                    break;
-                default:
-                    System.out.println("Invalid menu choice, please try again.");
+                    MainPanel newPanel = new MainPanel();
+                    newPanel.setVisible(true);
+                }
             }
-        } while (menuChoice != 7);
+        });
+    }
+
+    public static void main(String[] args) {
+
+        LibraryManagementSystem inputFrame = new LibraryManagementSystem();
     }
 }

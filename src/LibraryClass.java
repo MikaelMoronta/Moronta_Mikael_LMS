@@ -1,5 +1,5 @@
 /*
-Mikael Moronta CEN 3024C 02/29/24
+Mikael Moronta CEN 3024C 03/24/24
 LibraryClass
 The Library class is a very fundamental class that will handle most of the
 features needed in order to have a functional library management system.
@@ -10,7 +10,6 @@ updated once the user quits out of the program.
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +21,11 @@ public class LibraryClass {
         this.bookList = new ArrayList<>();
     }
 
-    public void loadBooksFromTextFile(String textFileName){
+    public boolean loadBooksFromTextFile(String textFileName){
         String textFileLine, title, author;
         String[] text;
         int id;
+        boolean fileNotFound = false;
         /*
         The try and catch was implemented in order to catch any exceptions in the case
         the there is something wrong with the text file.
@@ -47,22 +47,10 @@ public class LibraryClass {
             }
         } catch (IOException e) {
            System.out.println("There is an error with the file, please try again.");
+           fileNotFound = true;
         }
-    }
 
-    /*
-    addBook takes the id, title and author as an argument and
-    uses that that information to add a new book to the internal
-    Book List.
-     */
-    public void addBook(int id, String title, String author){
-        if (checkID(id)){
-            System.out.println("Error: Book with ID " + id + " already exists. Each new book must have an Unique ID.");
-        }
-        else {
-            bookList.add(new BookClass(id, title, author));
-            System.out.println("Book added to the collection.");
-        }
+        return fileNotFound;
     }
 
     /*
@@ -87,8 +75,17 @@ public class LibraryClass {
     anything. It then matches that inputted id to one on the internal
     Book list and deletes the book if it does.
      */
-    public void removeBookByID (int id){
-        bookList.removeIf(book -> book.getId() == id);
+    public boolean removeBookByID (int id){
+
+        boolean wrongID;
+
+        if (bookList.removeIf(book -> book.getId() == id)){
+            wrongID = false;
+        } else{
+            wrongID = true;
+        }
+
+        return wrongID;
     }
 
     /*
@@ -96,8 +93,16 @@ public class LibraryClass {
     anything. It then matches that inputted title to one on the internal
     Book list and deletes the book if it does.
      */
-    public void removeBookByTitle(String title) {
-        bookList.removeIf(book -> book.getTitle().equalsIgnoreCase(title));
+    public boolean removeBookByTitle(String title) {
+        boolean wrongTitle;
+
+        if (bookList.removeIf(book -> book.getTitle().equalsIgnoreCase(title))){
+            wrongTitle = false;
+        } else{
+            wrongTitle = true;
+        }
+
+        return wrongTitle;
     }
 
     /*
@@ -105,14 +110,15 @@ public class LibraryClass {
     anything. It then matches the inputted title to one on the internal
     Book list and checks out the book if it does.
     */
-    public void checkOutBook(String title) {
+    public int checkOutBook(String title) {
+        int wrongTitle = 1;
+
         for (BookClass book : bookList) {
             if (book.getTitle().equalsIgnoreCase(title)) {
-                book.checkOut();
-                return;
+                wrongTitle = book.checkOut();
             }
         }
-        System.out.println("Error: Book \"" + title + "\" not found in the library.");
+        return wrongTitle;
     }
 
     /*
@@ -120,14 +126,16 @@ public class LibraryClass {
     anything. It then matches the inputted title to one on the internal
     Book list and checks in the book if it does.
     */
-    public void checkInBook(String title) {
+    public int checkInBook(String title) {
+        int wrongTitle = 1;
+
         for (BookClass book : bookList) {
             if (book.getTitle().equalsIgnoreCase(title)) {
-                book.checkIn();
-                return;
+                wrongTitle = book.checkIn();
             }
         }
-        System.out.println("Error: Book \"" + title + "\" not found in the library.");
+        return wrongTitle;
+
     }
 
     /*
@@ -135,24 +143,12 @@ public class LibraryClass {
     anything. What it does is that outputs the internal Book List to
     the console.
      */
-    public void outputAllBooks() {
+    public String outputAllBooks() {
+        StringBuilder output = new StringBuilder();
         for (BookClass book : bookList) {
-            System.out.println(book);
+            output.append(book.toString()).append("\n");
         }
+        return output.toString();
     }
 
-    /*
-    saveBooksToTextFile method is in charge of taking the internal
-    Book List and outputting it to the designated text file. It doesn't
-    return anything, but it does take in the text file name.
-     */
-    public void saveBooksToTextFile(String textFileName) {
-        try (FileWriter writer = new FileWriter(textFileName)) {
-            for (BookClass book : bookList) {
-                writer.write(book.toString() + "\n");
-            }
-        }catch (IOException e) {
-            System.out.println("There is an error with the file, please try again.");
-        }
-    }
 }

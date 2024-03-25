@@ -2,7 +2,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /*
-Mikael Moronta CEN 3024C 02/29/24
+Mikael Moronta CEN 3024C 03/24/24
 BookClass
 The BookClass class is responsible for representing the concept of a book containing a unique
 id, title, author and due date. Thanks to this class it provides a blueprint for creating and working with
@@ -45,7 +45,9 @@ public class BookClass {
     to be checked out by the user then this function will change its due date to 4 weeks
     from the current date. It also checks if the book is already checked out.
     */
-    public void  checkOut() {
+    public int checkOut() {
+        int checkBook = 0;
+
         if (!checkedOut) {
             checkedOut = true;
             Calendar calendar = Calendar.getInstance();
@@ -54,7 +56,9 @@ public class BookClass {
             System.out.println("Book \"" + title + "\" checked out. Due date: " + dueDate);
         } else {
             System.out.println("Error: This book is already checked out.");
+            checkBook = 2;
         }
+        return checkBook;
     }
 
     /*
@@ -62,14 +66,18 @@ public class BookClass {
     in a book it will first check if the book is checked out, and then it will nullify the due date
     and adjust the check-out status to false.
     */
-    public void checkIn() {
+    public int checkIn() {
+        int checkbook = 0;
+
         if (checkedOut){
             checkedOut = false;
             dueDate = null;
             System.out.println("Book \"" + title + "\" checked in. Due date: " + dueDate);
         } else {
             System.out.println("Error: This book is not checked out.");
+            checkbook = 2;
         }
+        return checkbook;
     }
 
     // toString method returns the book as a string organized for the text file using commas.
