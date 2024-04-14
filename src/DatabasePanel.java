@@ -1,14 +1,12 @@
-/*
-Mikael Moronta CEN 3024C 04/07/24
-DatabasePanel class
-The DatabasePanel class represents a GUI panel that displays the database of books
-in the Library Management System program. Its primary function is to provide users
-with a visual representation of the library's book collection.
-*/
-
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * The DatabasePanel class --- represents a GUI panel that displays the database of books in the Library Management
+ * System program. Its primary function is to provide users with a visual representation of the library's book
+ * collection.
+ * @author Mikael Moronta CEN 3024C 04/14/24
+ */
 public class DatabasePanel extends JFrame {
     private JPanel DatabasePanel;
     private JTextPane textPane;

@@ -4,8 +4,13 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * DBHelper class --- it's an auto-generated class from the plugin SQL helper that deals with communicating to the
+ * database and executing queries.
+ * @author Mikael Moronta CEN 3024C 04/14/24
+ */
 public class DBHelper {
-	private final String DATABASE_NAME = "C:\\sqlite\\Library.db";
+	private final String DATABASE_NAME = "Library.db";
 	private Connection connection;
 	private Statement statement;
 	private ResultSet resultSet;

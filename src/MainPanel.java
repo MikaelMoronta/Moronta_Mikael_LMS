@@ -1,17 +1,3 @@
-/*
-Mikael Moronta CEN 3024C 04/07/24
-MainPanel class
-The MainPanel class represents the main menu GUI of the Library Management System program.
-Its function is to provide users with a centralized interface for performing various operations
-related to managing the library's book collection. This includes functionalities such as
-removing books by barcode or title, checking out and checking in books, displaying the database
-of books, and exiting the program. Each operation is associated with a specific text field for
-user input and a button to trigger the corresponding action. The class enhances user interaction
-by providing intuitive controls and feedback messages, ensuring efficient management of the library
-operations through automation and user-friendly interfaces. It also contains the queries that update
-the linked database.
-*/
-
 import DBHelper.Books;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,6 +6,16 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * MainPanel class --- represents the main menu GUI of the Library Management System program. Its function is to provide
+ * users with a centralized interface for performing various operations related to managing the library's book
+ * collection. This includes functionalities such as removing books by barcode or title, checking out and checking in
+ * books, displaying the database of books, and exiting the program. Each operation is associated with a specific text
+ * field for user input and a button to trigger the corresponding action. The class enhances user interaction by
+ * providing intuitive controls and feedback messages, ensuring efficient management of the library operations through
+ * automation and user-friendly interfaces. It also contains the queries that update the linked database.
+ * @author Mikael Moronta CEN 3024C 04/14/24
+ */
 public class MainPanel extends JFrame {
 
     private JPanel MainPanel;
@@ -120,11 +116,11 @@ public class MainPanel extends JFrame {
         });
     }
 
-    /*
-    BookExistQuery only takes a String as an argument. This string contains
-    the query that checks if a book exists in the database. Based on the result
-    the function returns either a 1 or 0;
-    */
+    /**
+     * Runs specified query and reads and filters the result into an integer.
+     * @param query a string that contains the desired query for the database.
+     * @return integer that represents if a book is on the database (1) or if it doesn't exist (0).
+     */
     public int bookExistQuery (String query){
         int bookExist = 0;
 
@@ -138,12 +134,11 @@ public class MainPanel extends JFrame {
         return bookExist;
     }
 
-    /*
-    removeBookByID only takes the id as an input and returns a boolean result.
-    The boolean result serves to communicate if the ID supplied was valid. This
-    function deletes a record of the linked database if the ID matches one of the
-    books.
-    */
+    /**
+     * Takes specified book ID and deletes it from the linked databases after running a query verifying its presence.
+     * @param id an integer that represents the desired book to be removed from the linked database.
+     * @return boolean value that represents either the specified ID exists in the linked database.
+     */
     public boolean removeBookByID (int id){
 
         boolean wrongID;
@@ -160,16 +155,14 @@ public class MainPanel extends JFrame {
         } else{
             wrongID = true;
         }
-
         return wrongID;
     }
 
-    /*
-    removeBookByTitle only takes a String as an input and returns a boolean result.
-    The boolean result serves to communicate if the title supplied was valid. This
-    function deletes a record of the linked database if the title matches one of the
-    books.
-    */
+    /**
+     * Takes specified book title and deletes it from the linked databases after running a query verifying its presence.
+     * @param title a string that represents the desired book to be removed from the linked database.
+     * @return boolean value that represents either the specified title exists in the linked database.
+     */
     public boolean removeBookByTitle(String title) {
         boolean wrongTitle;
 
@@ -183,16 +176,15 @@ public class MainPanel extends JFrame {
         } else{
             wrongTitle = true;
         }
-
         return wrongTitle;
     }
 
-    /*
-    checkOutBook only takes the title as an input and returns an integer.
-    The integer is then used to communicate if the title is not found (1), if
-    the books is checked out already (2) or if the checking out was successfully (0).
-    It then updates the database by changing the status and update of the book.
-    */
+    /**
+     * Takes specified book title and checks it out from the database after verifying its presence in the database.
+     * @param title a string that represents the desired book to be checked out from the linked database.
+     * @return an integer that represents the result. (0) The specified books was successfully checked out, (1) the book
+     * does not exist in the linked database, (2) the book was already checked out.
+     */
     public int checkOutBook(String title) {
         int wrongTitle = 1;
 
@@ -231,12 +223,12 @@ public class MainPanel extends JFrame {
         return wrongTitle;
     }
 
-    /*
-    checkInBook only takes the title as an input and returns an integer.
-    The integer is then used to communicate if the title is not found (1), if
-    the books is checked in already (2) or if the checking in was successfully (0).
-    It then updates the database by changing the status and update of the book.
-    */
+    /**
+     * Takes specified book title and checks it in from the database after verifying its presence in the database.
+     * @param title a string that represents the desired book to be checked in from the linked database.
+     * @return an integer that represents the result. (0) The specified books was successfully checked in, (1) the book
+     * does not exist in the linked database, (2) the book was already checked in.
+     */
     public int checkInBook(String title) {
         int wrongTitle = 1;
 
